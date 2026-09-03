@@ -34,3 +34,14 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Production deployment
+
+NuHome deploys to the separate EC2 instance when changes are pushed to `main`. Work on `dev`, open a pull request into `main`, and merge it to trigger `.github/workflows/deploy-production.yml`.
+
+Add these GitHub Actions secrets under **Settings → Secrets and variables → Actions**:
+
+- `NUHOME_HOST`: the NuHome Elastic IP address
+- `NUHOME_USER`: `ubuntu`
+- `NUHOME_SSH_KEY`: the complete private key used for the NuHome EC2 instance
+
+The server must have NuHome installed at `/var/www/nuhome`, with PM2 managing a process named `nuhome`. The workflow runs `npm ci`, builds the production app, and restarts that process after the validation job passes.
