@@ -1,0 +1,80 @@
+name: Deploy NuHome production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: nuhome-production
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+  deploy:
+    name: Deploy to EC2
+    needs: validate
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        env:
+          NUHOME_SSH_KEY: ${{ secrets.NUHOME_SSH_KEY }}
+          NUHOME_HOST: ${{ secrets.NUHOME_HOST }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$NUHOME_SSH_KEY" > ~/.ssh/nuhome_deploy
+          chmod 600 ~/.ssh/nuhome_deploy
+          ssh-keyscan -H "$NUHOME_HOST" >> ~/.ssh/known_hosts
+
+      - name: Upload source
+        env:
+          NUHOME_HOST: ${{ secrets.NUHOME_HOST }}
+          NUHOME_USER: ${{ secrets.NUHOME_USER }}
+        run: |
+          rsync -az --delete \
+            --exclude '.git/' \
+            --exclude 'node_modules/' \
+            --exclude '.next/' \
+            --exclude '.env*' \
+            -e 'ssh -i ~/.ssh/nuhome_deploy' \
+            ./ "$NUHOME_USER@$NUHOME_HOST:/var/www/nuhome/"
+
+      - name: Build and restart application
+        env:
+          NUHOME_HOST: ${{ secrets.NUHOME_HOST }}
+          NUHOME_USER: ${{ secrets.NUHOME_USER }}
+        run: |
+          ssh -i ~/.ssh/nuhome_deploy "$NUHOME_USER@$NUHOME_HOST" <<'REMOTE'
+            set -e
+            cd /var/www/nuhome
+            npm ci
+            npm run build
+            pm2 restart nuhome --update-env
+            pm2 save
+          REMOTE
