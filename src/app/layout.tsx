@@ -14,7 +14,7 @@ const sans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nuhome.co.uk"),
+  metadataBase: new URL("https://nuhomeliving.co.uk"),
   title: {
     default: "NuHome Living | Better Living. Inside and Out.",
     template: "%s | NuHome Living",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: "NuHome Living | Better Living. Inside and Out.",
     description:
       "A UK home and outdoor living company building brands for the spaces people live in.",
-    url: "https://nuhome.co.uk",
+    url: "https://nuhomeliving.co.uk",
     siteName: "NuHome Living",
     locale: "en_GB",
     type: "website",

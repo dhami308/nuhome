@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://nuhome.co.uk";
+  const baseUrl = "https://nuhomeliving.co.uk";
   return ["", "/about", "/brands", "/contact"].map((path) => ({
     url: `${baseUrl}${path}`,
     lastModified: new Date(),
