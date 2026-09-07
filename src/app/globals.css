@@ -430,6 +430,15 @@ a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visibl
 .enquiry-form input:focus, .enquiry-form select:focus, .enquiry-form textarea:focus { border-color: var(--ink); outline: 2px solid rgba(216, 173, 39, .35); }
 .form-submit { align-items: center; display: flex; gap: 20px; justify-content: space-between; margin-top: 4px; }
 .form-submit p { color: var(--ink-soft); font-size: 12px; line-height: 1.45; margin: 0; max-width: 180px; }
+.form-submit button[disabled] { cursor: default; opacity: .55; transform: none; }
+.form-submit .form-error { color: #b3261e; max-width: 260px; }
+.form-honeypot { left: -9999px; position: absolute; width: 1px; height: 1px; overflow: hidden; }
+.enquiry-form-success { display: grid; gap: 14px; margin-top: 35px; max-width: 520px; }
+.enquiry-form-success h3 { margin: 0; }
+.enquiry-form-success p { color: var(--ink-soft); margin: 0; }
+.enquiry-form-success .button-outline { justify-self: start; margin-top: 6px; }
+.button-outline { border: 1px solid var(--ink); color: var(--ink); }
+.button-outline:hover { background: var(--ink); color: #fff; }
 .contact-support-image { height: 420px; margin: -25px 0 35px; position: relative; }
 .contact-support-image img { object-fit: cover; }
 .contact-support-note { border-top: 1px solid var(--line); display: grid; gap: 8px; margin-top: 45px; padding-top: 18px; }
