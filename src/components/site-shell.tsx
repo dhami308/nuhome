@@ -53,7 +53,7 @@ export function Footer() {
         <span>Company registration number: </span>
         <span>Registered office: </span>
         <span>Registered in England and Wales</span>
-        <a href="mailto:support@nuhome.co.uk">support@nuhome.co.uk</a>
+        <a href="mailto:support@nuhomeliving.co.uk">support@nuhomeliving.co.uk</a>
         <span>Nustone is a trading brand of NuHome Living Ltd.</span>
       </div>
       <div className="footer-bottom">
